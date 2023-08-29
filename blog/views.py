@@ -12,7 +12,7 @@ from blog.models import Blog
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
-    fields = ('blog_title', 'post',)
+    fields = ('blog_title', 'post', 'blog_image',)
     success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
@@ -26,7 +26,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
 
 class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = Blog
-    fields = ('blog_title', 'post',)
+    fields = ('blog_title', 'post', 'blog_image',)
 
     def form_valid(self, form):
         if form.is_valid():

@@ -9,7 +9,7 @@
                     <h4 class="my-0 font-weight-normal">Создать</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post" action="" class="form-floating">
+                    <form method="post" action="" class="form-floating" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.as_p }}
 
