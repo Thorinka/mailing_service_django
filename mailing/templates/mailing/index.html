@@ -1,0 +1,79 @@
+{% extends 'mailing/base.html' %}
+{% load my_tags %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row text-center">
+        <div class="col-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Количество рассылок всего</h4>
+                    <br>
+                </div>
+
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{ total_mailings_counter }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Количество активных рассылок</h4>
+                </div>
+
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{ active_mailing_counter }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Количество уникальных клиентов</h4>
+                </div>
+
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">{{ unique_client_counter }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <!--        {% if random_blog %}-->
+        {% for object in random_blog %}
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">"{{ object.blog_title|title }}" ({{object.slug}})</h4>
+                </div>
+                <div class="card-body">
+                    <p>{{ object.post | truncatechars:100 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    Добавлен: {{ object.created_date }}
+                    Просмотры: {{ object.view_count }}
+                    <div class="d-flex justify-content-sm-end">
+                        <a href="{% url 'blog:view' object.pk %}"
+                           class="btn btn-sm btn-outline-secondary"> Подробнее</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+        <!--        {% endif %}-->
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'mailing/base.html' %}
+{% load my_tags %}
+
+
+
+{% block content %}
+{% if user.is_authenticated %}
+
+<div class="container">
+    <div class="col-12 mb-4">
+        <a class="btn btn-outline-primary" href="{% url 'mailing:create_mailing' %}">Создать рассылку</a>
+    </div>
+
+    <div class="row text-center">
+        {% for object in object_list %}
+        <div class="col-4">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="list-unstyled mt-4 mb-4 text-start m-3">
+                        <li> Рассылка: {{ object.start_time }}</li>
+                        <li> Владелец: {{ object.owner }}</li>
+
+                    </ul>
+
+                    <br>
+                    <div class="btn-group">
+                        {% if perms.mailing.change_mailingsettings %}
+                        <a class="btn btn-outline-secondary" href="{% url 'mailing:update_mailing' object.pk %}">Редактировать</a>
+                        {% endif %}
+                        {% if perms.mailing.delete_mailingsettings %}
+                        <a class="btn btn-outline-danger" href="{% url 'mailing:delete_mailing' object.pk %}">Удалить</a>
+                        {% endif %}
+                        <a class="btn btn-outline-info" href="{% url 'mailing:mailing_log' object.pk %}">История</a>
+                    </div>
+                    <div class="mt-1">
+                        {% if perms.mailing.view_mailingclient %}
+                        <a class="btn btn-outline-success" href="{% url 'mailing:mailing_clients_list' object.pk %}">Клиенты</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+{% include 'mailing/includes/inc_need_authorization.html' %}
+{% endif %}
+
+    {% endblock %}
+

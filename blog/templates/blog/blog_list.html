@@ -1,0 +1,42 @@
+
+{% extends 'mailing/base.html' %}
+{% load my_tags %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="col-12 mb-5">
+    <a class="btn btn-outline-primary" href="{% url 'blog:create' %}"> Добавить материал </a>
+</div>
+
+<div class="container">
+    <div class="row text-center">
+        {% for object in object_list %}
+        <div class="col-3">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ object.blog_title|title }}</h4>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a href="{% url 'blog:view' object.pk %}"
+                           class="btn btn-sm btn-outline-secondary"> View</a>
+                        <a href="{% url 'blog:edit' object.pk %}"
+                           class="btn btn-sm btn-outline-secondary"> Edit</a>
+                        <a href="{% url 'blog:delete' object.pk %}"
+                           class="btn btn-sm btn-outline-danger"> Delete</a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+        {% endfor %}
+</div>
+</div>
+{% else %}
+{% include 'mailing/includes/inc_need_authorization.html' %}
+{% endif %}
+    {% endblock %}
+

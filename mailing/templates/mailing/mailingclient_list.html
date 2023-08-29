@@ -1,0 +1,65 @@
+{% extends 'mailing/base.html' %}
+{% load my_tags %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+
+
+<div class="col-12">
+    <form class="row justify-content-md-center" method="post" enctype="multipart/form-data">
+
+        <div class="col-3">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Активные клиенты
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        {% for item in object_list %}
+                        <li>
+                            {{ item }}
+                            <a class="float-end btn btn-outline-warning"
+                               href="{% url 'mailing:mailing_clients_list_toggle' mailing_pk item.pk %}">
+                                Убрать</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Неактивные клиенты
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        {% for item in clients %}
+                        <li>
+                            {{ item }}
+                            <a class="float-end btn btn-outline-success"
+                               href="{% url 'mailing:mailing_clients_list_toggle' mailing_pk item.pk %}">
+                                Добавить</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
+
+    </form>
+</div>
+{% else %}
+{% include 'mailing/includes/inc_need_authorization.html' %}
+{% endif %}
+{% endblock %}
+

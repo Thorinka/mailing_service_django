@@ -1,0 +1,44 @@
+{% extends 'mailing/base.html' %}
+{% load my_tags %}
+
+
+
+{% block content %}
+{% if user.is_authenticated %}
+
+<div class="container">
+    <div class="col-12 mb-4">
+        <a class="btn btn-outline-primary" href="{% url 'mailing:message_create' %}">Создать сообщение</a>
+    </div>
+
+    <div class="row text-center">
+        {% for object in object_list %}
+        <div class="col-3">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="list-unstyled mt-4 mb-4 text-start m-3">
+                        <li> Сообщение: {{ object.subject }}</li>
+
+                    </ul>
+                    <br>
+                    <div class="btn-group">
+                        <a class="btn btn-outline-secondary" href="{% url 'mailing:message_update' object.pk %}">Редактировать</a>
+                        <a class="btn btn-outline-danger" href="{% url 'mailing:message_delete' object.pk %}">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+{% include 'mailing/includes/inc_need_authorization.html' %}
+{% endif %}
+
+    {% endblock %}
+

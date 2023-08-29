@@ -1,0 +1,39 @@
+{% extends 'mailing/base.html' %}
+{% load my_tags %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+
+
+<div class="col-12">
+
+    <div class="col-3">
+        <div class="container">
+            <h3>
+                Статистика
+            </h3>
+        </div>
+
+        {% if object_list %}
+        {% for object in object_list %}
+
+        <div class="container">
+            <div class="row mb-3 text-center">
+                <div class="col-4 themed-grid-col">{{ object.last_try }}</div>
+                <div class="col-4 themed-grid-col">{{ object.status }}</div>
+                <div class="col-4 themed-grid-col">{{ object.mail_service_response }}</div>
+            </div>
+
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+</div>
+{% else %}
+{% include 'mailing/includes/inc_need_authorization.html' %}
+{% endif %}
+
+{% endblock %}
+

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 # Create your models here.
@@ -17,8 +18,9 @@ class Client(models.Model):
         return f'{self.email}'
 
     class Meta:
-        verbose_name ='клиент'
+        verbose_name = 'клиент'
         verbose_name_plural = 'клиенты'
+
 
 class MailingMessage(models.Model):
     subject = models.CharField(max_length=50, verbose_name='тема')
@@ -32,7 +34,7 @@ class MailingMessage(models.Model):
         verbose_name_plural = 'cooбщения'
 
 
-class MailSettings(models.Model):
+class MailingSettings(models.Model):
     PERIOD_DAILY = 'daily'
     PERIOD_WEEKLY = 'weekly'
     PERIOD_MONTHLY = 'monthly'
@@ -53,22 +55,26 @@ class MailSettings(models.Model):
         (STATUS_FINISHED, 'Завершена'),
     )
 
-    mailing_time = models.DateTimeField(verbose_name='время')
+    start_time = models.DateTimeField(verbose_name='время начала')
+    end_time = models.DateTimeField(verbose_name='время окончания', **NULLABLE)
     period = models.CharField(max_length=20, choices=PERIODS, default=PERIOD_DAILY, verbose_name='период')
-    status = models.CharField(max_length=20, choices=STATUSES, default=STATUS_CREATED, verbose_name='период')
+    status = models.CharField(max_length=20, choices=STATUSES, default=STATUS_CREATED, verbose_name='статус')
 
     message = models.ForeignKey(MailingMessage, on_delete=models.CASCADE, verbose_name='сообщение')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
+
     def __str__(self):
-        return f'{self.mailing_time} / {self.period}'
+        return f'{self.start_time} / {self.period}'
 
     class Meta:
         verbose_name = 'настройка'
         verbose_name_plural = 'настройки'
 
 
+
 class MailingClient(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='клиент')
-    settings = models.ForeignKey(MailSettings, on_delete=models.CASCADE, verbose_name='настройки')
+    settings = models.ForeignKey(MailingSettings, on_delete=models.CASCADE, verbose_name='настройки')
 
     def __str__(self):
         return f'{self.client} / {self.settings}'
@@ -88,8 +94,9 @@ class MailingLog(models.Model):
 
     last_try = models.DateTimeField(auto_now_add=True, verbose_name='дата последней попытки')
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='клиент')
-    settings = models.ForeignKey(MailSettings, on_delete=models.CASCADE, verbose_name='настройки')
+    settings = models.ForeignKey(MailingSettings, on_delete=models.CASCADE, verbose_name='настройки')
     status = models.CharField(choices=STATUSES, default=STATUS_SUCCESS, verbose_name='статус')
+    mail_service_response = models.TextField(**NULLABLE, verbose_name='ответ почтового сервиса')
 
     def __str__(self):
         return f'{self.last_try}'
@@ -97,5 +104,3 @@ class MailingLog(models.Model):
     class Meta:
         verbose_name = 'лог'
         verbose_name_plural = 'логи'
-
-

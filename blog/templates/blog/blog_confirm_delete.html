@@ -1,0 +1,25 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Создать</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="" class="form-floating">
+                        {% csrf_token %}
+                        <p>Удалить публикацию {{object.blog_title}}?</p>
+                        <button type="submit" class="btn btn-lg btn btn-primary">Подтвердить</button>
+                        <a href="{% url 'blog:list' %}" class="btn btn-warning">Отмена</a>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+{% else %}
+{% include 'mailing/includes/inc_need_authorization.html' %}
+{% endif %}
+{% endblock %}
+

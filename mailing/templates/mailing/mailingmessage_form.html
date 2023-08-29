@@ -1,0 +1,36 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <div class="col-12">
+        <form class="row justify-content-md-center" method="post" enctype="multipart/form-data">
+
+                <div class="col-3">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                {% if object %}
+                                    Редактирование сообщения
+                                {% else %}
+                                    Добавление нового сообщения
+                                {% endif %}
+                            </h3>
+                        </div>
+                        <div class="card-body">
+
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            <button type="submit" class="btn btn-outline-success">Сохранить</button>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+
+
+        </form>
+    </div>
+{% else %}
+{% include 'mailing/includes/inc_need_authorization.html' %}
+{% endif %}
+{% endblock %}
+
