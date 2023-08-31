@@ -62,8 +62,8 @@ def send_mails():
                     elif mailing_period == MailingSettings.PERIOD_MONTHLY:
                         if (datetime_now - last_try_date).days >= 30:
                             send_email(mailing_setting, mailing_client)
-                    else:
-                        send_email(mailing_setting, mailing_client)
+                else:
+                    send_email(mailing_setting, mailing_client)
 
 
 def get_random_blog():
